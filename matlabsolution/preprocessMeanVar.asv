@@ -1,0 +1,27 @@
+
+
+% TODO !!!!!!!!!! check if the zero-division threshold is ok
+
+function out = preprocessMeanVar(data)
+% Data is a matrix of images in vector form. Each image is a row of the
+% matrix.
+% Out is of the same dimension than Data, but is now 0-mean and unit
+% variance.
+
+M = size(data,1);
+mu = mean(data);
+sigma = std(data);
+
+[I J] = find(sigma < 0.01); % make sure there are no divisions by zero
+sigma(J) = 1;
+mu(J) = 0;
+
+meanMat = repmat(mu,M,1);
+stdMat = repmat(sigma,M,1);
+
+out = (data - meanMat)./stdMat;
+
+end
+
+
+

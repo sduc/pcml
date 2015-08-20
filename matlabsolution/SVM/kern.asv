@@ -1,0 +1,40 @@
+function [ out ] = kern( x,sigma2)
+
+[m n] = size(x);
+y = ones(m,m);
+
+%linear Kernel 
+% y = x*x';
+
+%gaussian Kernel 
+for i = 1:m
+dist = x - repmat(x(i,:),m,1);
+dist = sum(dist.^2,2); % corresponds to ||x - xnewimage||^2
+y(:,i) = exp(-dist/(2*sigma2));
+
+end
+
+out = y; % y is a mxm matrix each column is K(xi, xnew) for all i, for the next xnew,you need to get the next column  
+end
+
+
+
+% function [ out ] = kern( X, xnew,sigma2)
+% 
+% [m n] = size(X);
+% %gaussian Kernel 
+% 
+% dist = sum((X-repmat(xnew,m,1)).^2,2);
+% out = exp(-dist/(2*sigma2));
+% 
+% end
+
+
+
+
+
+
+
+
+
+

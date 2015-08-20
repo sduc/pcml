@@ -1,0 +1,281 @@
+% function out = svm(X, tOut, eta, C)
+% %SVM Summary of this function goes here
+% %   Detailed explanation goes here
+% 
+% 
+% alpha = ones(4,1)*0.01;
+% v = 0;
+% zPlus = 10;
+% zMinus = -10;
+% stop = false;
+% 
+% 
+% alphaPrev = zeros(4,1);
+% deltaAlpha = zeros(4,1);
+% gamma = zeros(4,1);
+% SV = size(X,1);
+% countEnd = 0;
+% supportVec = X;
+% z = zeros(4,1);
+% epoch = 0;
+% 
+% 
+% while stop ~= true
+%     countAlpha = 0;
+%     epoch = epoch +1
+%     for mu = 1 : SV % all pattern mu (SV)
+%         %         for p = 1 : 19440 % all patterns of the training set
+%         %             sum = sum + alpha(p)*Tout(p)*Kern(x(p),x(mu));
+%         %         end
+% 
+%         z(mu) = sum(alpha.*tOut.*kern(X,supportVec(mu,:))) - v;
+%         gamma(mu) = tOut(mu)*z(mu);
+%         deltaAlpha(mu) = eta*(1-gamma(mu))
+%         alphaPrev(mu) = alpha(mu);
+%         alpha(mu) = alpha(mu)+deltaAlpha(mu);
+% 
+%         % update des Support Vectors should detect alpha being 0 ON AVERAGE
+% 
+% %         if alpha(mu)  <= 0.000001
+% %             countAlpha = countAlpha +1;
+% %         end
+% %         if countAlpha == 100
+% % 
+% %             supportVec(mu,:) = [];
+% %             alpha(mu) = [];
+% %             tOut(mu)=[];
+% %         end
+%         alpha(mu)
+%         % Update alphas at boundaries
+%         if alpha(mu) < 0
+%             alpha(mu) = 0.0;
+%         elseif alpha(mu) > C
+%             alpha(mu) = C;
+%         end
+%         
+%         if tOut(mu) == 1 && zPlus > z(mu) && alpha(mu) < C
+%             zPlus = z(mu);
+%         end
+%         if tOut(mu) == -1 && zMinus < z(mu) && alpha(mu) < C
+%             zMinus = z(mu);
+%         end
+%         
+%         u = 0.5*(zPlus + zMinus);
+%         v = u + v;
+%         z = z - u;
+% 
+%         zPlus = zPlus - u;
+%         zMinus = zMinus - u;
+% 
+%         %condition foireuse d'arrêt
+% 
+%         %         if 0.5* (zplus - zminus) - 1 < 0.001
+%         %             stop = true;
+%         %         end
+% 
+%         %condition sur les alpha
+% 
+%         if alphaPrev(mu) - alpha(mu) <= 0.01
+%             countEnd = countEnd+1
+%         else
+%             countEnd = 0;
+%         end
+%         if countEnd >= 10
+%             out = cell(1,3);
+%             out{1}=alpha;
+%             out{2}=tOut;
+%             out{3}=support;
+%             stop = true;
+%         end
+%     end
+% end
+% end
+
+
+% 
+% function out = svm(X, tOut, eta, C)
+% %SVM Summary of this function goes here
+% %   Detailed explanation goes here
+% 
+% 
+% alpha = ones(4,1)*0.01;
+% v = 0;
+% stop = false;
+% 
+% 
+% alphaPrev = zeros(4,1);
+% deltaAlpha = zeros(4,1);
+% gamma = zeros(4,1);
+% SV = size(X,1);
+% countEnd = 0;
+% supportVec = X;
+% z = tOut*10;
+% epoch = 0;
+% 
+% 
+% while stop ~= true
+%     countAlpha = 0;
+%     epoch = epoch + 1
+%     for mu = 1 : SV % all pattern mu (SV)
+%         %         for p = 1 : 19440 % all patterns of the training set
+%         %             sum = sum + alpha(p)*Tout(p)*Kern(x(p),x(mu));
+%         %         end
+%         
+%         z(mu) = sum(alpha.*tOut.*kern(X,supportVec(mu,:))) - v;
+% %         z(mu)
+%         gamma(mu) = tOut(mu)*z(mu);
+%         deltaAlpha(mu) = eta*(1-gamma(mu));
+% %         alphaPrev(mu) = alpha(mu)
+%         alpha(mu) = alpha(mu)+deltaAlpha(mu);
+% %         deltaAlpha(mu)
+%         alpha(mu)
+%         % update des Support Vectors should detect alpha being 0 ON AVERAGE
+% 
+% %         if alpha(mu)  <= 0.000001
+% %             countAlpha = countAlpha +1;
+% %         end
+% %         if countAlpha == 100
+% % 
+% %             supportVec(mu,:) = [];
+% %             alpha(mu) = [];
+% %             tOut(mu)=[];
+% %         end
+% %         alpha(mu)
+%         % Update alphas at boundaries
+%         if alpha(mu) <= 0
+%             alpha(mu) = 0.0;
+%         elseif alpha(mu) > C
+%             alpha(mu) = C;
+%         end
+%         
+%         alpha
+%         zPlus = Inf;
+%         zMinus = -Inf;
+%         
+%         [I,J,Val] = find(alpha(find(tOut == 1)) < C);
+%         if length(Val) ~= 0
+%             zPlus = min(Val);
+%         end
+%         
+%         [I,J,Val] = find(alpha(find(tOut == -1)) < C);
+%         if length(Val) ~= 0
+%             zMinus = max(Val);
+%         end
+%         u = 0.5*(zPlus + zMinus);
+%         v = u + v;
+% size(u)
+% u
+%         z = z - u;
+% 
+% %         zPlus = zPlus - u
+% %         zMinus = zMinus - u
+% 
+%         %condition foireuse d'arrêt
+%         
+%         if abs(0.5* (zPlus - zMinus) - 1) < 0.0001
+%             stop = true;
+%         end
+% 
+%         %condition sur les alpha
+% 
+% %         if alphaPrev(mu) - alpha(mu) <= 0.01
+% %             countEnd = countEnd+1
+% %         else
+% %             countEnd = 0;
+% %         end
+% %         if countEnd >= 10
+% %             out = cell(1,3);
+% %             out{1}=alpha;
+% %             out{2}=tOut;
+% %             out{3}=support;
+% %             stop = true;
+% %         end
+%     end
+% %     if epoch==4
+% %         stop = true
+% %     end
+% end
+% out = cell(1,3);
+% out{1}=alpha;
+% out{2}=tOut;
+% out{3}=supportVec;
+% end
+
+
+
+
+
+
+function out = svm(X, tOut, eta, C,Kernel)
+
+
+SV = size(X,1);
+alpha = ones(SV,1)*0.01;
+v = 0;
+stop = false;
+gamma = zeros(SV,1);
+deltaAlpha = zeros(SV,1);
+
+z = tOut*10;
+epoch = 0;
+
+
+while stop ~= true
+    epoch = epoch + 1;
+    for mu = 1 : SV % all pattern mu (SV)
+   
+        z(mu) = (alpha'.*tOut')*Kernel(:,mu) - v;
+
+        gamma(mu) = tOut(mu)*z(mu);
+        deltaAlpha(mu) = eta*(1-gamma(mu));
+        alpha(mu) = alpha(mu) + deltaAlpha(mu);
+
+        % Update alphas at boundaries
+        if alpha(mu) <= 0
+            alpha(mu) = 0.0;
+        elseif alpha(mu) > C
+            alpha(mu) = C;
+        end
+        
+        zPlus = Inf;
+        zMinus = -Inf;
+       
+
+        val = z(tOut==1 & alpha<C );
+        if ~isempty(val)
+            zPlus = min(val);
+        else
+            stop = true;
+            fprintf('infinite value for zPlus');
+            break
+        end
+
+
+        val2 = z(tOut==-1 & alpha<C );
+        if ~isempty(val2)
+            zMinus = max(val2);
+        else
+            stop = true;
+            fprintf('infinite value for zMinus');
+            break
+        end
+        u = 0.5*(zPlus + zMinus);
+        v = u + v;
+        z = z - u;
+        
+        %condition foireuse d'arrêt
+%         zPlus - zMinus
+        if abs(0.5* (zPlus - zMinus) - 1) < 0.1
+            stop = true;
+        end
+    end
+    if epoch == 3000
+        stop = true;
+    end
+end
+epoch
+out = cell(1,2);
+out{1} = alpha;
+out{2} = v;
+
+end
